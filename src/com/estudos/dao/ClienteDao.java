@@ -3,12 +3,10 @@ package com.estudos.dao;
 import com.estudos.model.Cliente;
 import com.estudos.util.ConnectionFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
-public class ClienteDao {
-    private Connection conn;
+public  class  ClienteDao {
+    private Connection conn = null;
 
     public ClienteDao() {
         this.conn = new ConnectionFactory().getConnection();
@@ -57,7 +55,17 @@ public class ClienteDao {
             int numLinhasAtualizadas =  stmt.executeUpdate();
             System.out.println("Qtde de registros atualizados: " + numLinhasAtualizadas);
             stmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public ResultSet listarClientes()  {
+        String sql = "select * from clientes";
+        try {
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            return rs;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
