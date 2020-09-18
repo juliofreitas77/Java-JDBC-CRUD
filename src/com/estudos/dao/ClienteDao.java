@@ -18,7 +18,6 @@ public class ClienteDao {
         String sql = "insert into clientes "
                 + "(Nome_Cliente, CPF_Cliente, Endereco_Cliente, Bairro_Cliente, Cidade_Cliente, Cep_Cliente,"
                 + "DataNasc_Cliente, Email_Cliente, Telefone_Cliente)" +
-                // + "Email_Cliente, Telefone_Cliente)" +
                 " values (?,?,?,?,?,?,?,?,?)"; // place holder
 
         PreparedStatement stmt = conn.prepareStatement(sql);
@@ -39,10 +38,28 @@ public class ClienteDao {
             stmt.close();
 
         } catch (SQLException e) {
-            throw new SQLException(e);
+            throw new RuntimeException(e);
         } finally {
             stmt.close();
             System.out.println("Conexão Finalizada!");
+        }
+    }
+
+    public void atualizaEndereco(Cliente cliente){
+        String sql = "UPDATE CLIENTES SET ENDERECO_CLIENTE=?" +
+                "WHERE CPF_CLIENTE=?";
+
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, cliente.getEnderecoCliente());
+            stmt.setString(2, cliente.getCpfCliente());
+
+            int numLinhasAtualizadas =  stmt.executeUpdate();
+            System.out.println("Qtde de registros atualizados: " + numLinhasAtualizadas);
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
