@@ -54,7 +54,7 @@ public  class  ClienteDao {
 
             int numLinhasAtualizadas =  stmt.executeUpdate();
             System.out.println("Qtde de registros atualizados: " + numLinhasAtualizadas);
-            stmt.close();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -66,6 +66,21 @@ public  class  ClienteDao {
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             return rs;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void deleteCliente(Cliente cliente){
+        String sql = "DELETE FROM CLIENTES WHERE IDCLIENTE=?";
+
+        try {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, cliente.getId());
+
+            int numLinhasAtualizadas =  stmt.executeUpdate();
+            System.out.println("Qtde de registros apagados: " + numLinhasAtualizadas);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
